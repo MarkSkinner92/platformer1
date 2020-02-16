@@ -6,15 +6,17 @@ void setup(){
   size(1000,600);
   loadTiles();
   loadLevel();
+  frameRate(60);
 }
 void draw(){
   background(0);
   renderTiles(worldpos.x,worldpos.y);
-  worldpos.x -= 20;
+  worldpos.x -= 15;
 }
 void renderTiles(float x, float y){
   float pl0 = (x/5.0)%1000;
   image(backgrounds[0],pl0,0);
+  image(backgrounds[0],pl0+1000,0);
   for(int i = constrain(round(-(x+100)/100),0,79); i < constrain(round(-(x-1100)/100),0,79); i++){
     for(int j = 0; j < 8; j++){
       if(level[i][j] != -1){
