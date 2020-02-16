@@ -29,7 +29,7 @@ void loadTiles(){
 }
 void loadLevel(){
   for(int i = 0; i < 80; i++){
-    for(int j = 0; j < 80; j++){
+    for(int j = 0; j < 8; j++){
       level[i][j] = -1;
     }
   }
