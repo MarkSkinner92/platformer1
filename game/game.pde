@@ -1,5 +1,7 @@
 PImage[] tiles = new PImage[10];
+PImage[] backgrounds = new PImage[3];
 int[][] level = new int[80][8];
+PVector worldpos = new PVector(0,0);
 void setup(){
   size(1000,600);
   loadTiles();
@@ -7,15 +9,13 @@ void setup(){
 }
 void draw(){
   background(0);
-  for(int x = 0; x < 10; x++){
-    for(int y = 0; y < 10; y++){
-      image(tiles[0],x*100,y*100);
-    }
-  }
-  renderTiles(0,0);
+  renderTiles(worldpos.x,worldpos.y);
+  worldpos.x -= 20;
 }
 void renderTiles(float x, float y){
-  for(int i = 0; i < 80; i++){
+  float pl0 = (x/5.0)%1000;
+  image(backgrounds[0],pl0,0);
+  for(int i = constrain(round(-(x+100)/100),0,79); i < constrain(round(-(x-1100)/100),0,79); i++){
     for(int j = 0; j < 8; j++){
       if(level[i][j] != -1){
         image(tiles[level[i][j]],i*100+x,(j-2)*100+y);
@@ -24,8 +24,9 @@ void renderTiles(float x, float y){
   }
 }
 void loadTiles(){
+  backgrounds[0] = loadImage("backgrounds/back0.png");
   tiles[0] = loadImage("tiles/test.png");
-  tiles[1] = loadImage("tiles/ground.png");
+  tiles[1] = loadImage("tiles/dirt.png");
 }
 void loadLevel(){
   for(int i = 0; i < 80; i++){
