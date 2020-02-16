@@ -32,6 +32,10 @@ void moveCam(){
   worldpos.y = 0;
 }
 void playerCollision(){
+  if(playerPos.x < 0){
+    playerPos.x = 0;
+    pspeed.x = 0;
+  }
   if(playerPos.y+100 > 500){
     playerPos.y -= playerPos.y - 400;
     pspeed.y = 0;
