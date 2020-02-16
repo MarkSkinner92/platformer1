@@ -108,7 +108,19 @@ void keyPressed(){
   if(key == 'd'){
     keys[key] = true;
   }
+  if(key == CODED){
+    if(keyCode == UP) keys['w'] = true;
+    if(keyCode == DOWN) keys['s'] = true;
+    if(keyCode == LEFT) keys['a'] = true;
+    if(keyCode == RIGHT) keys['d'] = true;
+  }
 }
 void keyReleased(){
-  keys[key] = false;
+  if(key == 'w' || key == 'a' || key == 's' || key == 'd') keys[key] = false;
+  if(key == CODED){
+    if(keyCode == UP) keys['w'] = false;
+    if(keyCode == DOWN) keys['s'] = false;
+    if(keyCode == LEFT) keys['a'] = false;
+    if(keyCode == RIGHT) keys['d'] = false;
+  }
 }
