@@ -6,7 +6,7 @@ PVector playerPos = new PVector(0,101);//world pos
 PVector psp = new PVector(0,0);//player screen position
 PVector pspeed = new PVector(0,0);
 PVector pacc = new PVector(0,0.5);
-boolean canjump = true;
+boolean canjump = true, onladder = false;
 boolean[] keys = new boolean[255];
 void setup(){
   size(1000,600);
@@ -32,21 +32,63 @@ void moveCam(){
   worldpos.y = 0;
 }
 void playerCollision(){
-  if(level[floor(((playerPos.x+50)/100))][floor((playerPos.y+50)/100+1)] == 1){
+  if(level[constrain(floor(((playerPos.x+50)/100)),0,79)][constrain(floor((playerPos.y+50)/100+1),0,5)] == 1){
     if(playerPos.y+100 > (floor((playerPos.y+50)/100+1)*100)){
+      canjump = true;
       playerPos.y-=playerPos.y-(floor((playerPos.y+50)/100+1)*100-100);
       pspeed.y = 0;
     }
+  }else{
+    canjump = false;
   }
+  if(level[constrain(floor((playerPos.x+50)/100+1),0,79)][constrain(floor((playerPos.y+50)/100),0,5)] == 1){
+    if(playerPos.x+100 > (floor((playerPos.x+50)/100+1)*100)){
+      playerPos.x-=playerPos.x-(floor((playerPos.x+50)/100+1)*100-100);
+      pspeed.x = 0;
+    }
+  }
+  if(level[constrain(floor((playerPos.x+50)/100-1),0,79)][constrain(floor((playerPos.y+50)/100),0,5)] == 1){
+    if(playerPos.x < (floor((playerPos.x+50)/100-1)*100)+100){
+      playerPos.x-=playerPos.x-(floor((playerPos.x+50)/100-1)*100+100);
+      pspeed.x = 0;
+    }
+  }
+  if(level[constrain(floor(((playerPos.x+50)/100)),0,79)][constrain(floor((playerPos.y+50)/100-1),0,5)] == 1){
+    if(playerPos.y < floor((playerPos.y+50)/100-1)*100+100){
+      playerPos.y-=playerPos.y-(floor((playerPos.y+50)/100-1)*100+100);
+      pspeed.y = 0;
+    }
+  }
+  boolean higherladder = level[constrain(floor(((playerPos.x+50)/100)),0,79)][constrain(floor((playerPos.y)/100+1),0,5)] == 2;
+  boolean lowerladder = level[constrain(floor(((playerPos.x+50)/100)),0,79)][constrain(floor((playerPos.y)/100),0,5)] == 2;
+  if(lowerladder || higherladder){
+    pacc.y = 0;
+    pspeed.y = 0;
+    onladder = true;
+    canjump = true;
+    if(keys['w']){
+      pspeed.y = -5;
+      if(!lowerladder){
+        pspeed.y = -10;
+      }
+    }
+    if(keys['s']){
+      pspeed.y = 5;
+    }
+  }else{
+    pacc.y = 0.5;
+    onladder = false;
+  }
+  println(onladder);
 }
 void playerPhysics(){
-  if(keys['a'] == true){
+  if(keys['a']){
     pspeed.x = -5;
   }
-  if(keys['d'] == true){
+  if(keys['d']){
     pspeed.x = 5;
   }
-  if(keys['w'] == true){
+  if(keys['w'] && canjump &&!onladder){
     pspeed.y = -10;
   }
   pspeed.x += pacc.x;
@@ -74,10 +116,10 @@ void renderTiles(float x, float y){
   }
   noFill();
   stroke(0,255,0);
-  //rect(worldpos.x+(floor((playerPos.x+50)/100)+1)*100,worldpos.y+(floor((playerPos.y+50)/100))*100,100,100);
-  //rect(worldpos.x+(floor((playerPos.x+50)/100)-1)*100,worldpos.y+(floor((playerPos.y+50)/100))*100,100,100);
-  rect(worldpos.x+(floor(((playerPos.x+50)/100)))*100,worldpos.y+(floor((playerPos.y+50)/100)+1)*100,100,100);
-  //rect(worldpos.x+(floor(((playerPos.x+50)/100)))*100,worldpos.y+(floor((playerPos.y+50)/100)-1)*100,100,100);
+  rect(worldpos.x+(floor((playerPos.x+50)/100)+1)*100,worldpos.y+(floor((playerPos.y+50)/100))*100,100,100);
+  rect(worldpos.x+(floor((playerPos.x+50)/100)-1)*100,worldpos.y+(floor((playerPos.y+50)/100))*100,100,100);
+  rect(worldpos.x+(floor((playerPos.x+50)/100))*100,worldpos.y+(floor((playerPos.y+50)/100+1))*100,100,100);
+  rect(worldpos.x+(floor(((playerPos.x+50)/100)))*100,worldpos.y+(floor((playerPos.y+50)/100)-1)*100,100,100);
 }
 void loadTiles(){
   tiles[0] = loadImage("tiles/test.png");
@@ -93,19 +135,19 @@ void loadLevel(){
   for(int i = 0; i < 80; i++){
     level[i][5] = 1;
   }
-  level[8][4] = 2;
-  level[8][3] = 2;
-  level[8][2] = 2;
-  level[7][4] = 1;
-  level[4][5] = -1;
-  level[5][5] = -1;
+  level[4][4] = 2;
+  level[4][3] = 2;
+  level[4][2] = 2;
+  level[5][2] = 1;
   level[6][5] = -1;
+  level[5][5] = -1;
 }
 void keyPressed(){
   if(key == 'w'){
     keys[key] = true;
   }
   if(key == 's'){
+    keys[key] = true;
   }
   if(key == 'a'){
     keys[key] = true;
