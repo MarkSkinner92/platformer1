@@ -23,6 +23,16 @@ void draw(){
   renderTiles(worldpos.x,worldpos.y);
   renderPlayer();
 }
+void respawn(){
+  worldpos = new PVector(0,0);
+  playerPos = new PVector(0,101);//world pos
+  psp = new PVector(0,0);//player screen position
+  pspeed = new PVector(0,0);
+  pacc = new PVector(0,0.5);
+  canjump = true;
+  onladder = false;
+  keys = new boolean[255];
+}
 void moveCam(){
   float target = -playerPos.x+400;
   if(target >= 0){
@@ -32,7 +42,25 @@ void moveCam(){
   worldpos.y = 0;
 }
 void playerCollision(){
-  if(level[constrain(floor(((playerPos.x+50)/100)),0,79)][constrain(floor((playerPos.y+50)/100+1),0,5)] == 1){
+  if(playerPos.x < 0){
+    playerPos.x = 0;
+  }
+  if(playerPos.y > 1000){
+    respawn();
+  }
+  int bottomblockL = level[constrain(floor(((playerPos.x+75)/100)),0,79)][constrain(floor((playerPos.y+50)/100+1),0,5)];
+  int bottomblockR = level[constrain(floor(((playerPos.x+25)/100)),0,79)][constrain(floor((playerPos.y+50)/100+1),0,5)];
+  
+  int rightblockT = level[constrain(floor((playerPos.x+50)/100+1),0,79)][constrain(floor((playerPos.y+25)/100),0,5)];
+  int rightblockB = level[constrain(floor((playerPos.x+50)/100+1),0,79)][constrain(floor((playerPos.y+75)/100),0,5)];
+  
+  int leftblockT = level[constrain(floor((playerPos.x+50)/100-1),0,79)][constrain(floor((playerPos.y+25)/100),0,5)];
+  int leftblockB = level[constrain(floor((playerPos.x+50)/100-1),0,79)][constrain(floor((playerPos.y+75)/100),0,5)];
+  
+  int topblockL = level[constrain(floor(((playerPos.x+25)/100)),0,79)][constrain(floor((playerPos.y+50)/100-1),0,5)];
+  int topblockR = level[constrain(floor(((playerPos.x+75)/100)),0,79)][constrain(floor((playerPos.y+50)/100-1),0,5)];
+  
+  if(bottomblockL == 1 || bottomblockR == 1){
     if(playerPos.y+100 > (floor((playerPos.y+50)/100+1)*100)){
       canjump = true;
       playerPos.y-=playerPos.y-(floor((playerPos.y+50)/100+1)*100-100);
@@ -41,19 +69,19 @@ void playerCollision(){
   }else{
     canjump = false;
   }
-  if(level[constrain(floor((playerPos.x+50)/100+1),0,79)][constrain(floor((playerPos.y+50)/100),0,5)] == 1){
+  if(rightblockB == 1 || rightblockT == 1){
     if(playerPos.x+100 > (floor((playerPos.x+50)/100+1)*100)){
       playerPos.x-=playerPos.x-(floor((playerPos.x+50)/100+1)*100-100);
       pspeed.x = 0;
     }
   }
-  if(level[constrain(floor((playerPos.x+50)/100-1),0,79)][constrain(floor((playerPos.y+50)/100),0,5)] == 1){
+  if(leftblockB == 1 || leftblockT == 1){
     if(playerPos.x < (floor((playerPos.x+50)/100-1)*100)+100){
       playerPos.x-=playerPos.x-(floor((playerPos.x+50)/100-1)*100+100);
       pspeed.x = 0;
     }
   }
-  if(level[constrain(floor(((playerPos.x+50)/100)),0,79)][constrain(floor((playerPos.y+50)/100-1),0,5)] == 1){
+  if(topblockL == 1 || topblockR == 1){
     if(playerPos.y < floor((playerPos.y+50)/100-1)*100+100){
       playerPos.y-=playerPos.y-(floor((playerPos.y+50)/100-1)*100+100);
       pspeed.y = 0;
@@ -79,7 +107,6 @@ void playerCollision(){
     pacc.y = 0.5;
     onladder = false;
   }
-  println(onladder);
 }
 void playerPhysics(){
   if(keys['a']){
@@ -120,6 +147,9 @@ void renderTiles(float x, float y){
   rect(worldpos.x+(floor((playerPos.x+50)/100)-1)*100,worldpos.y+(floor((playerPos.y+50)/100))*100,100,100);
   rect(worldpos.x+(floor((playerPos.x+50)/100))*100,worldpos.y+(floor((playerPos.y+50)/100+1))*100,100,100);
   rect(worldpos.x+(floor(((playerPos.x+50)/100)))*100,worldpos.y+(floor((playerPos.y+50)/100)-1)*100,100,100);
+  stroke(0,0,255);
+  rect(worldpos.x+(floor((playerPos.x+25)/100))*100,worldpos.y+(floor((playerPos.y+50)/100+1))*100,100,100);
+  rect(worldpos.x+(floor((playerPos.x+75)/100))*100,worldpos.y+(floor((playerPos.y+50)/100+1))*100,100,100);
 }
 void loadTiles(){
   tiles[0] = loadImage("tiles/test.png");
