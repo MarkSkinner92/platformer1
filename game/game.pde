@@ -1,8 +1,8 @@
 PImage[] tiles = new PImage[10];
 PImage playerimg;
-int[][] level = new int[80][8];
+int[][] level = new int[80][6];
 PVector worldpos = new PVector(0,0);
-PVector playerPos = new PVector(0,0);//world pos
+PVector playerPos = new PVector(0,101);//world pos
 PVector psp = new PVector(0,0);//player screen position
 PVector pspeed = new PVector(0,0);
 PVector pacc = new PVector(0,0.5);
@@ -32,13 +32,11 @@ void moveCam(){
   worldpos.y = 0;
 }
 void playerCollision(){
-  if(playerPos.x < 0){
-    playerPos.x = 0;
-    pspeed.x = 0;
-  }
-  if(playerPos.y+100 > 500){
-    playerPos.y -= playerPos.y - 400;
-    pspeed.y = 0;
+  if(level[floor(((playerPos.x+50)/100))][floor((playerPos.y+50)/100+1)] == 1){
+    if(playerPos.y+100 > (floor((playerPos.y+50)/100+1)*100)){
+      playerPos.y-=playerPos.y-(floor((playerPos.y+50)/100+1)*100-100);
+      pspeed.y = 0;
+    }
   }
 }
 void playerPhysics(){
@@ -68,12 +66,18 @@ void renderPlayer(){
 }
 void renderTiles(float x, float y){
   for(int i = constrain(round(-(x+100)/100),0,79); i < constrain(round(-(x-1100)/100),0,79); i++){
-    for(int j = 0; j < 8; j++){
+    for(int j = 0; j < 6; j++){
       if(level[i][j] != -1){
-        image(tiles[level[i][j]],i*100+x,(j-2)*100+y);
+        image(tiles[level[i][j]],i*100+x,(j)*100+y);
       }
     }
   }
+  noFill();
+  stroke(0,255,0);
+  //rect(worldpos.x+(floor((playerPos.x+50)/100)+1)*100,worldpos.y+(floor((playerPos.y+50)/100))*100,100,100);
+  //rect(worldpos.x+(floor((playerPos.x+50)/100)-1)*100,worldpos.y+(floor((playerPos.y+50)/100))*100,100,100);
+  rect(worldpos.x+(floor(((playerPos.x+50)/100)))*100,worldpos.y+(floor((playerPos.y+50)/100)+1)*100,100,100);
+  //rect(worldpos.x+(floor(((playerPos.x+50)/100)))*100,worldpos.y+(floor((playerPos.y+50)/100)-1)*100,100,100);
 }
 void loadTiles(){
   tiles[0] = loadImage("tiles/test.png");
@@ -82,19 +86,20 @@ void loadTiles(){
 }
 void loadLevel(){
   for(int i = 0; i < 80; i++){
-    for(int j = 0; j < 8; j++){
+    for(int j = 0; j < 6; j++){
       level[i][j] = -1;
     }
   }
   for(int i = 0; i < 80; i++){
-    level[i][7] = 1;
+    level[i][5] = 1;
   }
-  level[8][6] = 2;
-  level[8][5] = 2;
   level[8][4] = 2;
-  level[4][7] = -1;
-  level[5][7] = -1;
-  level[6][7] = -1;
+  level[8][3] = 2;
+  level[8][2] = 2;
+  level[7][4] = 1;
+  level[4][5] = -1;
+  level[5][5] = -1;
+  level[6][5] = -1;
 }
 void keyPressed(){
   if(key == 'w'){
