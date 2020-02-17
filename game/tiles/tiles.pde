@@ -18,6 +18,7 @@ void loadTiles(){
   tiles[0] = loadImage("test.png");
   tiles[1] = loadImage("dirt.png");
   tiles[2] = loadImage("ladder.png");
+  tiles[3] = loadImage("ladder.png");
 }
 void draw(){
   background(240);

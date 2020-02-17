@@ -1,5 +1,6 @@
 PVector worldpos = new PVector(0,0);
 boolean[] keys = new boolean[255];
+int score = 0;
 void setup(){
   size(1000,600);
   loadTiles();
@@ -23,6 +24,7 @@ void respawn(){
   canjump = true;
   onladder = false;
   keys = new boolean[255];
+  loadLevel();
 }
 void moveCam(){
   float target = -playerPos.x+400;

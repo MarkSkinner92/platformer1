@@ -17,6 +17,8 @@ void playerCollision(){
   if(playerPos.y > 1000){
     respawn();
   }
+  int blockon = level[constrain(floor(((playerPos.x+50)/100)),0,79)][constrain(floor((playerPos.y+50)/100),0,5)];
+
   int bottomblockL = level[constrain(floor(((playerPos.x+75)/100)),0,79)][constrain(floor((playerPos.y+50)/100+1),0,5)];
   int bottomblockR = level[constrain(floor(((playerPos.x+25)/100)),0,79)][constrain(floor((playerPos.y+50)/100+1),0,5)];
   
@@ -75,6 +77,11 @@ void playerCollision(){
   }else{
     pacc.y = 0.5;
     onladder = false;
+  }
+  if(blockon == 3){//coin
+    if(playerPos.x > 0 && playerPos.x < 7900 && playerPos.y >= 0 && playerPos.y <=500)
+    level[floor((playerPos.x+50)/100)][floor((playerPos.y+50)/100)] = -1;
+    score++;
   }
 }
 void playerPhysics(){
