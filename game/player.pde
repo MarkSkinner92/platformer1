@@ -1,5 +1,14 @@
+int pmg = 0;
+PImage[] playerimg = new PImage[3];
+PVector playerPos = new PVector(0,101);//world pos
+PVector psp = new PVector(0,0);//player screen position
+PVector pspeed = new PVector(0,0);
+PVector pacc = new PVector(0,0.5);
+boolean canjump = true, onladder = false;
 void loadPlayers(){
   playerimg[0] = loadImage("tiles/player.png");
+  playerimg[1] = loadImage("tiles/player2.png");
+  playerimg[2] = loadImage("tiles/player3.png");
 }
 void playerCollision(){
   if(playerPos.x < 0){
@@ -71,13 +80,16 @@ void playerCollision(){
 void playerPhysics(){
   if(keys['a']){
     pspeed.x = -5;
+    pmg = 1;
   }
   if(keys['d']){
     pspeed.x = 5;
+    pmg = 0;
   }
   if(keys['w'] && canjump &&!onladder){
     pspeed.y = -10;
   }
+  if(onladder) pmg = 2;
   pspeed.x += pacc.x;
   pspeed.y += pacc.y;
   playerPos.x += pspeed.x;
@@ -91,5 +103,5 @@ void renderPlayer(){
   //stroke(255,0,0);
   //strokeWeight(3);
   //rect(psp.x,psp.y,100,100);
-  image(playerimg[0],psp.x,psp.y);
+  image(playerimg[pmg],psp.x,psp.y);
 }

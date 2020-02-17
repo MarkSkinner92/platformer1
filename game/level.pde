@@ -1,3 +1,5 @@
+PImage[] tiles = new PImage[10];
+int[][] level = new int[80][6];
 void loadTiles(){
   tiles[0] = loadImage("tiles/test.png");
   tiles[1] = loadImage("tiles/dirt.png");

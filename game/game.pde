@@ -1,12 +1,4 @@
-PImage[] tiles = new PImage[10];
-PImage[] playerimg = new PImage[3];
-int[][] level = new int[80][6];
 PVector worldpos = new PVector(0,0);
-PVector playerPos = new PVector(0,101);//world pos
-PVector psp = new PVector(0,0);//player screen position
-PVector pspeed = new PVector(0,0);
-PVector pacc = new PVector(0,0.5);
-boolean canjump = true, onladder = false;
 boolean[] keys = new boolean[255];
 void setup(){
   size(1000,600);
