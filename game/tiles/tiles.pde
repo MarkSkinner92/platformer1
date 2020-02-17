@@ -18,7 +18,12 @@ void loadTiles(){
   tiles[0] = loadImage("test.png");
   tiles[1] = loadImage("dirt.png");
   tiles[2] = loadImage("ladder.png");
-  tiles[3] = loadImage("ladder.png");
+  tiles[3] = loadImage("coin1.png");
+  tiles[4] = loadImage("dirt2.png");
+  tiles[5] = loadImage("dirt3.png");
+  tiles[6] = loadImage("dirt4.png");
+  tiles[7] = loadImage("spike.png");
+  tiles[8] = loadImage("youwon.png");
 }
 void draw(){
   background(240);

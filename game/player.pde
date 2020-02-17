@@ -11,12 +11,6 @@ void loadPlayers(){
   playerimg[2] = loadImage("tiles/player3.png");
 }
 void playerCollision(){
-  if(playerPos.x < 0){
-    playerPos.x = 0;
-  }
-  if(playerPos.y > 1000){
-    respawn();
-  }
   int blockon = level[constrain(floor(((playerPos.x+50)/100)),0,79)][constrain(floor((playerPos.y+50)/100),0,5)];
 
   int bottomblockL = level[constrain(floor(((playerPos.x+75)/100)),0,79)][constrain(floor((playerPos.y+50)/100+1),0,5)];
@@ -31,7 +25,7 @@ void playerCollision(){
   int topblockL = level[constrain(floor(((playerPos.x+25)/100)),0,79)][constrain(floor((playerPos.y+50)/100-1),0,5)];
   int topblockR = level[constrain(floor(((playerPos.x+75)/100)),0,79)][constrain(floor((playerPos.y+50)/100-1),0,5)];
   
-  if(bottomblockL == 1 || bottomblockR == 1){
+  if(orr(bottomblockL,bottomblockR,new int[]{1,4,5,6})){
     if(playerPos.y+100 > (floor((playerPos.y+50)/100+1)*100)){
       canjump = true;
       playerPos.y-=playerPos.y-(floor((playerPos.y+50)/100+1)*100-100);
@@ -40,19 +34,19 @@ void playerCollision(){
   }else{
     canjump = false;
   }
-  if(rightblockB == 1 || rightblockT == 1){
+  if(orr(rightblockB,rightblockT,new int[]{1,4,5,6})){
     if(playerPos.x+100 > (floor((playerPos.x+50)/100+1)*100)){
       playerPos.x-=playerPos.x-(floor((playerPos.x+50)/100+1)*100-100);
       pspeed.x = 0;
     }
   }
-  if(leftblockB == 1 || leftblockT == 1){
+  if(orr(leftblockB,leftblockT,new int[]{1,4,5,6})){
     if(playerPos.x < (floor((playerPos.x+50)/100-1)*100)+100){
       playerPos.x-=playerPos.x-(floor((playerPos.x+50)/100-1)*100+100);
       pspeed.x = 0;
     }
   }
-  if(topblockL == 1 || topblockR == 1){
+  if(orr(topblockR,topblockL,new int[]{1,4,5,6})){
     if(playerPos.y < floor((playerPos.y+50)/100-1)*100+100){
       playerPos.y-=playerPos.y-(floor((playerPos.y+50)/100-1)*100+100);
       pspeed.y = 0;
@@ -83,18 +77,30 @@ void playerCollision(){
     level[floor((playerPos.x+50)/100)][floor((playerPos.y+50)/100)] = -1;
     score++;
   }
+  if(blockon == 7){//spike
+    if(playerPos.x > 0 && playerPos.x < 7900 && playerPos.y >= 0 && playerPos.y <=500)
+    dead = true;
+    pspeed.y = -8;
+  }
+  if(blockon == 8){//youwon
+    if(playerPos.x > 0 && playerPos.x < 7900 && playerPos.y >= 0 && playerPos.y <=500)
+    win = true;
+    pspeed.y = -100;
+  }
 }
 void playerPhysics(){
-  if(keys['a']){
-    pspeed.x = -5;
-    pmg = 1;
-  }
-  if(keys['d']){
-    pspeed.x = 5;
-    pmg = 0;
-  }
-  if(keys['w'] && canjump &&!onladder){
-    pspeed.y = -10;
+  if(!dead){
+    if(keys['a']){
+      pspeed.x = -5;
+      pmg = 1;
+    }
+    if(keys['d']){
+      pspeed.x = 5;
+      pmg = 0;
+    }
+    if(keys['w'] && canjump &&!onladder){
+      pspeed.y = -10;
+    }
   }
   if(onladder) pmg = 2;
   pspeed.x += pacc.x;
@@ -111,4 +117,11 @@ void renderPlayer(){
   //strokeWeight(3);
   //rect(psp.x,psp.y,100,100);
   image(playerimg[pmg],psp.x,psp.y);
+}
+boolean orr(int a, int b, int[] c){
+  for(int i = 0; i < c.length; i++){
+    if(a == c[i]) return true;
+    if(b == c[i]) return true;
+  }
+  return false;
 }

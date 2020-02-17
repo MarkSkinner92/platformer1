@@ -1,21 +1,34 @@
 PVector worldpos = new PVector(0,0);
 boolean[] keys = new boolean[255];
 int score = 0;
+boolean dead = false;
+boolean win = false;
 void setup(){
   size(1000,600);
   loadTiles();
   loadPlayers();
   loadLevel();
 }
+//game main process
 void draw(){
   background(204, 239, 255);
   playerPhysics();
-  playerCollision();
+  if(!dead) playerCollision();
+  //respawn and boundry collisions
+  if(playerPos.x < 0){
+    playerPos.x = 0;
+  }
+  if(playerPos.y > 1000){
+    respawn();
+  }
+  
   moveCam();
   renderTiles(worldpos.x,worldpos.y);
   renderPlayer();
 }
 void respawn(){
+  dead = false;
+  win = false;
   worldpos = new PVector(0,0);
   playerPos = new PVector(0,101);//world pos
   psp = new PVector(0,0);//player screen position

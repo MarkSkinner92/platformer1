@@ -10,6 +10,11 @@ void loadTiles(){
   tiles[1] = loadImage("tiles/dirt.png");
   tiles[2] = loadImage("tiles/ladder.png");
   tiles[3] = loadImage("tiles/coin1.png");
+  tiles[4] = loadImage("tiles/dirt2.png");
+  tiles[5] = loadImage("tiles/dirt3.png");
+  tiles[6] = loadImage("tiles/dirt4.png");
+  tiles[7] = loadImage("tiles/spike.png");
+  tiles[8] = loadImage("tiles/youwon.png");
 }
 void loadLevel(){
   String s[] = loadStrings("tiles/generatedlevel.txt");
@@ -35,13 +40,15 @@ void renderTiles(float x, float y){
       }
     }
   }
-  //noFill();
-  //stroke(0,255,0);
+  noFill();
+  stroke(0,255,0);
+    rect(worldpos.x+(floor((playerPos.x+50)/100))*100,worldpos.y+(floor((playerPos.y+50)/100))*100,100,100);
+
   //rect(worldpos.x+(floor((playerPos.x+50)/100)+1)*100,worldpos.y+(floor((playerPos.y+50)/100))*100,100,100);
   //rect(worldpos.x+(floor((playerPos.x+50)/100)-1)*100,worldpos.y+(floor((playerPos.y+50)/100))*100,100,100);
   //rect(worldpos.x+(floor((playerPos.x+50)/100))*100,worldpos.y+(floor((playerPos.y+50)/100+1))*100,100,100);
   //rect(worldpos.x+(floor(((playerPos.x+50)/100)))*100,worldpos.y+(floor((playerPos.y+50)/100)-1)*100,100,100);
-  //stroke(0,0,255);
+  stroke(0,0,255);
   //rect(worldpos.x+(floor((playerPos.x+25)/100))*100,worldpos.y+(floor((playerPos.y+50)/100+1))*100,100,100);
   //rect(worldpos.x+(floor((playerPos.x+75)/100))*100,worldpos.y+(floor((playerPos.y+50)/100+1))*100,100,100);
 }
