@@ -46,6 +46,8 @@ void keyPressed(){
   if(key == 'd'){
     keys[key] = true;
   }
+  if(key == 'r')
+    respawn();
   if(key == CODED){
     if(keyCode == UP) keys['w'] = true;
     if(keyCode == DOWN) keys['s'] = true;

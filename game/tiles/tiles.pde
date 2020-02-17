@@ -111,6 +111,7 @@ void keyPressed(){
         savelevel();
     }
   }
+  if(tiles[current] == null) current = 0;
 }
 void keyReleased() {
   if (key == CODED) {
