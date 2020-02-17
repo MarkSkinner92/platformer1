@@ -94,6 +94,9 @@ void keyPressed(){
     case 'a':
     x += 100;
     break;
+    case 'l':
+    loadLevel();
+    break;
   }
   if (key == CODED) {
     if (keyCode == CONTROL) {
