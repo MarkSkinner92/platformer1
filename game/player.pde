@@ -87,9 +87,9 @@ void playerPhysics(){
 void renderPlayer(){
   psp.x = worldpos.x+playerPos.x;
   psp.y = worldpos.y+playerPos.y;
-  noFill();
-  stroke(255,0,0);
-  strokeWeight(3);
-  rect(psp.x,psp.y,100,100);
+  //noFill();
+  //stroke(255,0,0);
+  //strokeWeight(3);
+  //rect(psp.x,psp.y,100,100);
   image(playerimg[0],psp.x,psp.y);
 }
